@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: chat-server
+---
+spring:
+  data:
+    mongodb:
+      database: chat_server
+      uri: mongodb://localhost/chat_server
+      replica-set-name: myReplicaSet
+---
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+redis:
+  replica:
+    host: localhost
+    port: 6380
+---
+cors:
+  allowed-origin-patterns: "*"
+---
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+

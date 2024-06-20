@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
+    />
+    <title>Chat App | Spring Boot + WebSocket</title>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <link
+            rel="stylesheet"
+            href="/css/all.min.css"
+            integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+</head>
+<body
+        style="
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-color: #f0f0f0; /* Changed background color */
+    "
+>
+<noscript>
+    <h2>Please enable JavaScript in your browser!!!</h2>
+</noscript>
+
+
+<div id="chat-page">
+    <div class="chat-container">
+        <div class="chat-header" style="background-color: #007bff; /* Changed background color */">
+            <h2 style="color: #ffffff;">Private Chat</h2> <!-- Changed text color -->
+        </div>
+        <form id="groupConnectForm" name="groupConnectForm" nameForm="groupConnectForm">
+            <div class="form-group">
+                <div class="input-group clearfix">
+                    <input type="text" name="participant" placeholder="participant" class="form-control participant"/>
+                    <input type="text" name="participant" placeholder="participant" class="form-control participant"/>
+                    <input type="text" name="participant" placeholder="participant" class="form-control participant"/>
+                    <input type="text" name="participant" placeholder="participant" class="form-control participant"/>
+                    <input type="text" name="participant" placeholder="participant" class="form-control participant"/>
+                    <input type="text" name="participant" placeholder="participant" class="form-control participant"/>
+                    <input type="text" name="participant" placeholder="participant" class="form-control participant"/>
+                    <input type="text" name="participant" placeholder="participant" class="form-control participant"/>
+                    <input type="text" name="participant" placeholder="participant" class="form-control participant"/>
+                    <input type="text" id="group" placeholder="group" class="form-control"/>
+                    <button type="button" id="connect" class="btn" style="color: #ffffff; background-color: #007bff;">
+                        <i class="fa-solid fa-paper-plane"></i> Connect
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="connectingtochat">Connecting to the chat...</div>
+        <div class="form-group">
+            <div class="input-group clearfix">
+                <input type="file" id="attachment" placeholder="attachment" class="form-control"/>
+            </div>
+        </div>
+        <ul id="messageArea" style="
+            background-color: #e9ecef; /* Changed background color */
+            backdrop-filter: blur(10px);
+            color: #333; /* Changed text color */
+          "
+        ></ul>
+        <form id="messageForm" name="messageForm" nameForm="messageForm">
+            <div class="form-group">
+                <div class="input-group clearfix">
+                    <input type="text" id="sender" placeholder="sender" class="form-control participant"/>
+                    <input
+                            type="text"
+                            id="message"
+                            placeholder="Message"
+                            autocomplete="off"
+                            autofocus
+                            class="form-control"
+                            style="
+                  background-color: transparent;
+                  backdrop-filter: blur(24px);
+                  color: #333; /* Changed text color */
+                "
+                    />
+                    <button type="submit" class="btn" style="color: #ffffff; background-color: #007bff;">
+                        <!-- Changed button color -->
+                        <i class="fa-solid fa-paper-plane"></i> Send
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/js/sockjs.min.js"></script>
+<script src="/js/stomp.min.js"></script>
+<script src="/js/groupchat.js"></script>
+<script type="text/javascript">
+    window.onbeforeunload = function () {
+        return "Dude, are you sure you want to leave? Think of the kittens!";
+    };
+</script>
+</body>
+</html>

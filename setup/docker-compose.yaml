@@ -1,0 +1,81 @@
+version: "3.9"
+
+volumes:
+  chatcache:
+
+services:
+  chat-rabbitmq:
+    image: rabbitmq:3.13.3-management
+    container_name: chat-rabbitmq
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+      - 61613:61613
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    
+
+  chat-cache-master:
+    image: redis:6.2-alpine
+    container_name: chat-cache-master
+    restart: always
+    ports:
+      - '6379:6379'
+    environment:
+      REDIS_REPLICATION_MODE: master
+      ALLOW_EMPTY_PASSWORD: yes
+    volumes:
+      - chatcache:/data
+
+  chat-cache-slave:
+    depends_on:
+      - chat-cache-master
+    image: redis:6.2-alpine
+    container_name: chat-cache-slave
+    restart: always
+    ports:
+      - '6380:6379'
+    environment:
+      REDIS_REPLICATION_MODE: slave
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_MASTER_HOST: chat-cache-master
+      REDIS_MASTER_PORT_NUMBER: 6379
+    volumes:
+      - chatcache:/data
+      
+  mongo1:
+    image: mongo:6
+    hostname: mongo1
+    container_name: mongo1
+    ports:
+      - 27017:27017
+    entrypoint: ["mongod", "--replSet", "myReplicaSet", "--bind_ip", "localhost,mongo1"]
+
+  mongo2:
+    image: mongo:6
+    hostname: mongo2
+    container_name: mongo2
+    ports:
+      - 27018:27017
+    entrypoint: ["mongod", "--replSet", "myReplicaSet", "--bind_ip", "localhost,mongo2"]
+
+  mongo3:
+    image: mongo:6
+    hostname: mongo3
+    container_name: mongo3
+    ports:
+      - 27019:27017
+    entrypoint: ["mongod", "--replSet", "myReplicaSet", "--bind_ip", "localhost,mongo3"]
+
+  mongosetup:
+    image: mongo:6
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    volumes:
+      - ./scripts:/scripts
+    restart: "no"
+    entrypoint: [ "bash", "/scripts/mongo_setup.sh"]
